@@ -1,0 +1,83 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Bridging_Noob <bridgingnoob2@gmail.com>
+Date: Mon, 9 Dec 2024 16:43:11 +0100
+Subject: [PATCH] Added damage to entities touching the blade on a stone
+ cutter.
+
+
+diff --git a/src/main/java/net/minecraft/world/level/block/StonecutterBlock.java b/src/main/java/net/minecraft/world/level/block/StonecutterBlock.java
+index f1366aea49206afcd64bf058ee673d6a562315c5..dec9d7557853cb9cf5799136312b08beff22a0f3 100644
+--- a/src/main/java/net/minecraft/world/level/block/StonecutterBlock.java
++++ b/src/main/java/net/minecraft/world/level/block/StonecutterBlock.java
+@@ -2,6 +2,7 @@ package net.minecraft.world.level.block;
+ 
+ import com.mojang.serialization.MapCodec;
+ import javax.annotation.Nullable;
++import io.papermc.paper.event.entity.EntityInsideBlockEvent;
+ import net.minecraft.core.BlockPos;
+ import net.minecraft.core.Direction;
+ import net.minecraft.network.chat.Component;
+@@ -9,6 +10,8 @@ import net.minecraft.stats.Stats;
+ import net.minecraft.world.InteractionResult;
+ import net.minecraft.world.MenuProvider;
+ import net.minecraft.world.SimpleMenuProvider;
++import net.minecraft.world.entity.Entity;
++import net.minecraft.world.entity.LivingEntity;
+ import net.minecraft.world.entity.player.Player;
+ import net.minecraft.world.inventory.ContainerLevelAccess;
+ import net.minecraft.world.inventory.StonecutterMenu;
+@@ -18,6 +21,7 @@ import net.minecraft.world.level.Level;
+ import net.minecraft.world.level.block.state.BlockBehaviour;
+ import net.minecraft.world.level.block.state.BlockState;
+ import net.minecraft.world.level.block.state.StateDefinition;
++import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+ import net.minecraft.world.level.block.state.properties.EnumProperty;
+ import net.minecraft.world.level.pathfinder.PathComputationType;
+ import net.minecraft.world.phys.BlockHitResult;
+@@ -93,4 +97,46 @@ public class StonecutterBlock extends Block {
+     protected boolean isPathfindable(BlockState state, PathComputationType type) {
+         return false;
+     }
++
++    // GemFold start - Added damage to entities touching the blade on a stone cutter.
++    @Override
++    protected void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
++        final Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
++
++        if(!(entity instanceof LivingEntity)) {
++            return;
++        }
++
++        final double center;
++        final double entityCoord;
++
++        // Determine which axis to check.
++        if(direction == Direction.NORTH || direction == Direction.SOUTH) {
++            center = pos.getZ() + 0.5;
++            entityCoord = entity.getZ();
++        } else { // EAST or WEST
++            center = pos.getX() + 0.5;
++            entityCoord = entity.getX();
++        }
++
++        // Check if the entity should be counted as touching the blade.
++        if(Math.abs(center - entityCoord) > 0.3) {
++            return;
++        }
++
++        // Paper start - Add EntityInsideBlockEvent.
++        final EntityInsideBlockEvent event = new EntityInsideBlockEvent(
++            entity.getBukkitEntity(),
++            org.bukkit.craftbukkit.block.CraftBlock.at(world, pos)
++        );
++
++        if(!event.callEvent()) {
++            return;
++        }
++        // Paper end - Add EntityInsideBlockEvent.
++        entity.hurt(
++            world.damageSources().generic(), 3.0f
++        );
++    }
++    // GemFold end - Added damage to entities touching the blade on a stone cutter.
+ }
