@@ -28416,7 +28416,7 @@ index 50040c497a819cd1229042ab3cb057d34a32cacc..1f9c436a632e4f110be61cf76fcfc3b7
 +    // Paper end - block counting
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 7496260370adc6f627288637c53a652d27a6cd84..d08a9a8618be72b418d849846a5a433250f5b73d 100644
+index 766031d1482b0f49b196326b820d5ce9ae1c7c06..1f54752a4ea0788e73279cd99c7c35e3b5d9b6ce 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -176,7 +176,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
@@ -36227,10 +36227,10 @@ index ca62105a0ff0aa69385cbf2018f8fe6a4bb69fd4..92d9f0ea8f7810ae20d3996f49aefa53
  
      // Paper start - implement pointers
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index d5dc10cf9440f2394e6548c6a3e0160df13c9cae..20f64850cb42d986358f01ffcdb42187e1684bca 100644
+index e9df37ff66700278bc94ea1e42135b92d97d03f7..6a647cab8b2e476987931486e290703b8726f2c7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -3519,7 +3519,9 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -3527,7 +3527,9 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
      @Override
      public void setViewDistance(final int viewDistance) {
@@ -36241,7 +36241,7 @@ index d5dc10cf9440f2394e6548c6a3e0160df13c9cae..20f64850cb42d986358f01ffcdb42187
      }
  
      @Override
-@@ -3529,7 +3531,9 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -3537,7 +3539,9 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
      @Override
      public void setSimulationDistance(final int simulationDistance) {
@@ -36252,7 +36252,7 @@ index d5dc10cf9440f2394e6548c6a3e0160df13c9cae..20f64850cb42d986358f01ffcdb42187
      }
  
      @Override
-@@ -3539,7 +3543,9 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -3547,7 +3551,9 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
      @Override
      public void setSendViewDistance(final int viewDistance) {
